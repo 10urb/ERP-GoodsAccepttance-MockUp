@@ -104,7 +104,7 @@ class _LoginState extends State<LoginWidget> {
           child: ListView(
             children: [
               Image.network(
-                Asset.suenoLogoMavi,
+                Asset.logoBig,
                 scale: 1,
               ),
               Container(
@@ -131,7 +131,7 @@ class _LoginState extends State<LoginWidget> {
                         height: 150,
                       ),
                       Image.network(
-                        Asset.insoftproLogo,
+                        Asset.logoSmall,
                         scale: 6.5,
                         alignment: Alignment.center,
                       ),

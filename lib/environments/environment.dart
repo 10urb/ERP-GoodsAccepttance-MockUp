@@ -5,7 +5,7 @@ class Environment {
       LocaleManager.instance.getStringValue(PreferencesKeys.TOKEN);
   Environment();
 
-  static const baseUrl = 'http://erp.sueno.com.tr/api/';
+  static const baseUrl = 'baseapiurl';
   static var apiHeader = {
     "api-version": "1.0",
     "content-type": "application/json; charset=utf-8",
