@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:insoftpro_sueno_erp/environments/environment.dart';
+import 'package:erp-mockup___erp/environments/environment.dart';
 
 import 'package:async/async.dart';
 import 'dart:convert';
@@ -26,7 +26,7 @@ class UploadService {
       "chunkMetadata": test
     });
     var response = await dio.Dio().post(
-        "http://erp.sueno.com.tr/api/docs/documents/upload",
+        "http://erp._.com.tr/api/docs/documents/upload",
         data: formData,
         options: dio.Options(headers: apiHeaderFormData));
 

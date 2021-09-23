@@ -1,4 +1,4 @@
-package com.example.insoftpro_sueno_erp
+package com.example.erp-mockup___erp
 
 import io.flutter.embedding.android.FlutterActivity
 

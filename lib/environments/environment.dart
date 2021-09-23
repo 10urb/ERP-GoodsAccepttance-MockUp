@@ -1,4 +1,4 @@
-import 'package:insoftpro_sueno_erp/helpers/locale_manager.dart';
+import 'package:erp-mockup___erp/helpers/locale_manager.dart';
 
 class Environment {
   static String tokenValue =

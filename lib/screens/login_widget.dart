@@ -4,15 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:insoftpro_sueno_erp/assets/asset.dart';
-import 'package:insoftpro_sueno_erp/environments/environment.dart';
-import 'package:insoftpro_sueno_erp/environments/erp_strings.dart';
-import 'package:insoftpro_sueno_erp/helpers/erp_toastr.dart';
-import 'package:insoftpro_sueno_erp/helpers/locale_manager.dart';
-import 'package:insoftpro_sueno_erp/models/signed_in_model/signed_in_model.dart';
-import 'package:insoftpro_sueno_erp/screens/home_screen_widget.dart';
-import 'package:insoftpro_sueno_erp/services/login_service.dart';
-import 'package:insoftpro_sueno_erp/styles/erp_style.dart';
+import 'package:erp-mockup___erp/assets/asset.dart';
+import 'package:erp-mockup___erp/environments/environment.dart';
+import 'package:erp-mockup___erp/environments/erp_strings.dart';
+import 'package:erp-mockup___erp/helpers/erp_toastr.dart';
+import 'package:erp-mockup___erp/helpers/locale_manager.dart';
+import 'package:erp-mockup___erp/models/signed_in_model/signed_in_model.dart';
+import 'package:erp-mockup___erp/screens/home_screen_widget.dart';
+import 'package:erp-mockup___erp/services/login_service.dart';
+import 'package:erp-mockup___erp/styles/erp_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -64,7 +64,7 @@ class _LoginState extends State<LoginWidget> {
     txtPassword.clear();
   }
 
-  String title = "Sueno\n Stok Yönetim Paneline Hoş Geldiniz.";
+  String title = "_\n Stok Yönetim Paneline Hoş Geldiniz.";
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class _LoginState extends State<LoginWidget> {
           backgroundColor: Colors.blue.shade300,
           actions: [
             // Image.network(
-            //   Asset.insoftproLogo,
+            //   Asset.erp-mockupLogo,
             //   scale: 6.5,
             //   alignment: Alignment.center,
             // ),
@@ -88,7 +88,7 @@ class _LoginState extends State<LoginWidget> {
                 textDirection: TextDirection.rtl,
                 children: [
                   Text(
-                    "2021©Insoftpro",
+                    "2021©erp-mockup",
                     style: TextStyle(
                         fontSize: MediaQuery.of(context).size.width / 65,
                         fontStyle: FontStyle.normal,

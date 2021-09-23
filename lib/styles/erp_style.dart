@@ -75,4 +75,4 @@ class ERPStyle {
     height: 2,
   );
 }
-//2021©Insoftpro
+//2021©erp-mockup

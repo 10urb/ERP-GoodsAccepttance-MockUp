@@ -6,21 +6,21 @@ import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:insoftpro_sueno_erp/environments/erp_strings.dart';
-import 'package:insoftpro_sueno_erp/helpers/erp_toastr.dart';
-import 'package:insoftpro_sueno_erp/models/generate_dispatch_model/generate_dispatch_model.dart';
-import 'package:insoftpro_sueno_erp/models/market_place_model/market_place_model.dart';
-import 'package:insoftpro_sueno_erp/models/new_dispatch_model/new_dispatch_model.dart';
-import 'package:insoftpro_sueno_erp/models/stock_model/stock_model.dart';
-import 'package:insoftpro_sueno_erp/models/store_model/store_model.dart';
-import 'package:insoftpro_sueno_erp/models/unit_model/unit_model.dart';
-import 'package:insoftpro_sueno_erp/screens/goods_acceptance/expected_companies_widget.dart';
-import 'package:insoftpro_sueno_erp/services/dispatch_service.dart';
-import 'package:insoftpro_sueno_erp/services/market_place_service.dart';
-import 'package:insoftpro_sueno_erp/services/stock_service.dart';
-import 'package:insoftpro_sueno_erp/services/store_service.dart';
-import 'package:insoftpro_sueno_erp/services/unit_service.dart';
-import 'package:insoftpro_sueno_erp/styles/erp_style.dart';
+import 'package:erp-mockup___erp/environments/erp_strings.dart';
+import 'package:erp-mockup___erp/helpers/erp_toastr.dart';
+import 'package:erp-mockup___erp/models/generate_dispatch_model/generate_dispatch_model.dart';
+import 'package:erp-mockup___erp/models/market_place_model/market_place_model.dart';
+import 'package:erp-mockup___erp/models/new_dispatch_model/new_dispatch_model.dart';
+import 'package:erp-mockup___erp/models/stock_model/stock_model.dart';
+import 'package:erp-mockup___erp/models/store_model/store_model.dart';
+import 'package:erp-mockup___erp/models/unit_model/unit_model.dart';
+import 'package:erp-mockup___erp/screens/goods_acceptance/expected_companies_widget.dart';
+import 'package:erp-mockup___erp/services/dispatch_service.dart';
+import 'package:erp-mockup___erp/services/market_place_service.dart';
+import 'package:erp-mockup___erp/services/stock_service.dart';
+import 'package:erp-mockup___erp/services/store_service.dart';
+import 'package:erp-mockup___erp/services/unit_service.dart';
+import 'package:erp-mockup___erp/styles/erp_style.dart';
 
 class GoodsAcceptanceWidget2 extends StatefulWidget {
   final NewDispatch? newDispatch;
@@ -676,7 +676,7 @@ class _GoodAcceptanceWidgetState extends State<GoodsAcceptanceWidget2> {
   }
 
   buildPriceDataCellField(var price) {
-    //Sueno Depo Şefi Fiyatı Virgülden Sonra 4 Hane İstiyor.
+    //_ Depo Şefi Fiyatı Virgülden Sonra 4 Hane İstiyor.
     return DataCell(
       Text(price == null
           ? "0"

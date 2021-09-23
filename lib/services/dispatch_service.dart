@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:insoftpro_sueno_erp/environments/environment.dart';
-import 'package:insoftpro_sueno_erp/models/dispatch_model/dispatch_model.dart';
-import 'package:insoftpro_sueno_erp/models/new_dispatch_model/new_dispatch_model.dart';
+import 'package:erp-mockup___erp/environments/environment.dart';
+import 'package:erp-mockup___erp/models/dispatch_model/dispatch_model.dart';
+import 'package:erp-mockup___erp/models/new_dispatch_model/new_dispatch_model.dart';
 
 class DispatchService {
   List<int>? receiptNumbers;

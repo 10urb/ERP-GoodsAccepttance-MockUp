@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insoftpro_sueno_erp/screens/login_widget.dart';
+import 'package:erp-mockup___erp/screens/login_widget.dart';
 
 void main() {
   runApp(const MaterialApp(

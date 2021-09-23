@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:insoftpro_sueno_erp/environments/environment.dart';
+import 'package:erp-mockup___erp/environments/environment.dart';
 
 class PurchaseRequestAccordingToCompanyService {
   int? companyId;

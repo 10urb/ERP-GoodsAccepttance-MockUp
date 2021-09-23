@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:insoftpro_sueno_erp/environments/ERP_Strings.dart';
-import 'package:insoftpro_sueno_erp/helpers/erp_toastr.dart';
-import 'package:insoftpro_sueno_erp/models/purchase_request_detail_model/purchase_request_detail_model.dart';
-import 'package:insoftpro_sueno_erp/models/purchase_request_model/purchase_request_model.dart';
-import 'package:insoftpro_sueno_erp/screens/goods_acceptance/goods_acceptance_widget_1.dart';
-import 'package:insoftpro_sueno_erp/services/purchase_request_according_to_company_service.dart';
-import 'package:insoftpro_sueno_erp/styles/erp_style.dart';
+import 'package:erp-mockup___erp/environments/ERP_Strings.dart';
+import 'package:erp-mockup___erp/helpers/erp_toastr.dart';
+import 'package:erp-mockup___erp/models/purchase_request_detail_model/purchase_request_detail_model.dart';
+import 'package:erp-mockup___erp/models/purchase_request_model/purchase_request_model.dart';
+import 'package:erp-mockup___erp/screens/goods_acceptance/goods_acceptance_widget_1.dart';
+import 'package:erp-mockup___erp/services/purchase_request_according_to_company_service.dart';
+import 'package:erp-mockup___erp/styles/erp_style.dart';
 
 class PurchaseRequestAccordingToCompany extends StatefulWidget {
   final int sayi;

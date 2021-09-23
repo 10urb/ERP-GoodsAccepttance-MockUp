@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(insoftpro_sueno_erp LANGUAGES CXX)
+project(erp-mockup___erp LANGUAGES CXX)
 
-set(BINARY_NAME "insoftpro_sueno_erp")
+set(BINARY_NAME "erp-mockup___erp")
 
 cmake_policy(SET CMP0063 NEW)
 
