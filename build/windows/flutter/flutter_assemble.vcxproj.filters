@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\ProjectsInsoftpro\insoftpro_sueno_erp\build\windows\CMakeFiles\a47598ce267e1a9f919c9214af54b536\flutter_windows.dll.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\ProjectsInsoftpro\insoftpro_sueno_erp\build\windows\CMakeFiles\1231ea18167dd35885a98dd8f2d6655f\flutter_assemble.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\ProjectsInsoftpro\insoftpro_sueno_erp\windows\flutter\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\ProjectsInsoftpro\insoftpro_sueno_erp\build\windows\flutter\CMakeFiles\flutter_assemble" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{FB95DF1C-1D4F-3512-BBFB-A57633E72A5E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

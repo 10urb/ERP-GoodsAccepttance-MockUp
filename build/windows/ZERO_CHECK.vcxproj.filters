@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\ProjectsInsoftpro\insoftpro_sueno_erp\build\windows\CMakeFiles\e259df600f8048cfad931759167242e8\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{FB95DF1C-1D4F-3512-BBFB-A57633E72A5E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

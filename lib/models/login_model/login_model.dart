@@ -1,0 +1,19 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'login_model.g.dart';
+
+//flutter pub run build_runner build / model creater one time
+//flutter pub run build_runner watch / model creater and editor, momentary/ontime
+
+@JsonSerializable()
+class LoginModel {
+  String email;
+  String password;
+
+  LoginModel({required this.email, required this.password});
+
+  factory LoginModel.fromJson(Map<String, dynamic> json) =>
+      _$LoginModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LoginModelToJson(this);
+}

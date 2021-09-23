@@ -1,0 +1,10 @@
+^C:\PROJECTSINSOFTPRO\INSOFTPRO_SUENO_ERP\WINDOWS\FLUTTER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/ProjectsInsoftpro/insoftpro_sueno_erp/windows -BC:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows --check-stamp-file C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/flutter/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

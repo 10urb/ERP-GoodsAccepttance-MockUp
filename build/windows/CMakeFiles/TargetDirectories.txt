@@ -1,0 +1,10 @@
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/CMakeFiles/INSTALL.dir
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/CMakeFiles/ALL_BUILD.dir
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/CMakeFiles/ZERO_CHECK.dir
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/flutter/CMakeFiles/flutter_wrapper_plugin.dir
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/flutter/CMakeFiles/flutter_wrapper_app.dir
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/flutter/CMakeFiles/flutter_assemble.dir
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/flutter/CMakeFiles/INSTALL.dir
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/runner/CMakeFiles/insoftpro_sueno_erp.dir
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/runner/CMakeFiles/INSTALL.dir
+C:/ProjectsInsoftpro/insoftpro_sueno_erp/build/windows/runner/CMakeFiles/ALL_BUILD.dir
