@@ -20,7 +20,7 @@ class ERPMainDrawer {
               padding: const EdgeInsets.all(20),
               curve: standardEasing,
               child: Image.network(
-                Asset.suenoLogoSiyah,
+                Asset.logoMedium,
                 alignment: Alignment.topLeft,
                 scale: 1.8,
               ),

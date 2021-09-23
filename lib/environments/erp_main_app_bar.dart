@@ -9,7 +9,7 @@ class ERPMainAppBar {
     return AppBar(
       centerTitle: true,
       title: Image.network(
-        Asset.suenoLogoSiyah,
+        Asset.logoMedium,
         scale: 1.8,
       ),
       elevation: 5,
