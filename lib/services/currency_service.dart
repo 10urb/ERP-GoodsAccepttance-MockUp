@@ -1,5 +1,5 @@
+import 'package:erp_mockup/environments/environment.dart';
 import 'package:http/http.dart' as http;
-import 'package:erp-mockup___erp/environments/environment.dart';
 
 class CurrencyService {
   CurrencyService();

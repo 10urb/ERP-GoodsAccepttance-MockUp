@@ -1,18 +1,19 @@
 import 'dart:convert';
 
+import 'package:erp_mockup/assets/asset.dart';
+import 'package:erp_mockup/environments/environment.dart';
+import 'package:erp_mockup/environments/erp_strings.dart';
+import 'package:erp_mockup/helpers/erp_toastr.dart';
+import 'package:erp_mockup/helpers/locale_manager.dart';
+import 'package:erp_mockup/models/signed_in_model/signed_in_model.dart';
+import 'package:erp_mockup/screens/home_screen_widget.dart';
+import 'package:erp_mockup/services/login_service.dart';
+import 'package:erp_mockup/styles/erp_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:erp-mockup___erp/assets/asset.dart';
-import 'package:erp-mockup___erp/environments/environment.dart';
-import 'package:erp-mockup___erp/environments/erp_strings.dart';
-import 'package:erp-mockup___erp/helpers/erp_toastr.dart';
-import 'package:erp-mockup___erp/helpers/locale_manager.dart';
-import 'package:erp-mockup___erp/models/signed_in_model/signed_in_model.dart';
-import 'package:erp-mockup___erp/screens/home_screen_widget.dart';
-import 'package:erp-mockup___erp/services/login_service.dart';
-import 'package:erp-mockup___erp/styles/erp_style.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginWidget extends StatefulWidget {

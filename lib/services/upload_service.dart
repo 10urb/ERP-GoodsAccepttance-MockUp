@@ -1,11 +1,10 @@
 import 'dart:io';
+import 'package:erp_mockup/environments/environment.dart';
 import 'package:path/path.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:erp-mockup___erp/environments/environment.dart';
 
-import 'package:async/async.dart';
 import 'dart:convert';
 
 class UploadService {
@@ -26,7 +25,7 @@ class UploadService {
       "chunkMetadata": test
     });
     var response = await dio.Dio().post(
-        "http://erp._.com.tr/api/docs/documents/upload",
+        Environment.baseUrl + "docs/documents/upload",
         data: formData,
         options: dio.Options(headers: apiHeaderFormData));
 

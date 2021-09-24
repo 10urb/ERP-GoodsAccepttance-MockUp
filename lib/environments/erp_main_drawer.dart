@@ -1,8 +1,9 @@
+import 'package:erp_mockup/assets/asset.dart';
+import 'package:erp_mockup/screens/goods_acceptance/expected_companies_widget.dart';
+import 'package:erp_mockup/styles/erp_style.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:erp-mockup___erp/assets/asset.dart';
-import 'package:erp-mockup___erp/screens/goods_acceptance/expected_companies_widget.dart';
-import 'package:erp-mockup___erp/styles/erp_style.dart';
 
 class ERPMainDrawer {
   static buildMainDrawer(BuildContext context) {

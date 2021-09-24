@@ -1,8 +1,8 @@
+import 'package:erp_mockup/assets/asset.dart';
+import 'package:erp_mockup/helpers/locale_manager.dart';
+import 'package:erp_mockup/screens/login_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:erp-mockup___erp/assets/asset.dart';
-import 'package:erp-mockup___erp/helpers/locale_manager.dart';
-import 'package:erp-mockup___erp/screens/login_widget.dart';
 
 class ERPMainAppBar {
   static buildMainAppBar(BuildContext context) {

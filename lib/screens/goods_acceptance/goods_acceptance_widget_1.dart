@@ -5,20 +5,20 @@ import 'dart:io';
 
 import 'package:date_field/date_field.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:erp_mockup/environments/environment.dart';
+import 'package:erp_mockup/helpers/image_manager.dart';
+import 'package:erp_mockup/models/file_model/file_model.dart';
+import 'package:erp_mockup/models/generate_dispatch_model/generate_dispatch_model.dart';
+import 'package:erp_mockup/models/new_dispatch_model/new_dispatch_model.dart';
+import 'package:erp_mockup/models/register_response_model/register_response_model.dart';
+import 'package:erp_mockup/screens/goods_acceptance/goods_acceptance_widget_2.dart';
+import 'package:erp_mockup/services/currency_service.dart';
+import 'package:erp_mockup/services/dispatch_service.dart';
+import 'package:erp_mockup/services/register_service.dart';
+import 'package:erp_mockup/services/upload_service.dart';
+import 'package:erp_mockup/styles/erp_style.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:erp-mockup___erp/environments/environment.dart';
-import 'package:erp-mockup___erp/helpers/image_manager.dart';
-import 'package:erp-mockup___erp/models/file_model/file_model.dart';
-import 'package:erp-mockup___erp/models/generate_dispatch_model/generate_dispatch_model.dart';
-import 'package:erp-mockup___erp/models/new_dispatch_model/new_dispatch_model.dart';
-import 'package:erp-mockup___erp/models/register_response_model/register_response_model.dart';
-import 'package:erp-mockup___erp/screens/goods_acceptance/goods_acceptance_widget_2.dart';
-import 'package:erp-mockup___erp/services/currency_service.dart';
-import 'package:erp-mockup___erp/services/dispatch_service.dart';
-import 'package:erp-mockup___erp/services/register_service.dart';
-import 'package:erp-mockup___erp/services/upload_service.dart';
-import 'package:erp-mockup___erp/styles/erp_style.dart';
 
 class GoodsAcceptanceWidget1 extends StatefulWidget {
   final List<int>? selectedRequest;
@@ -233,7 +233,6 @@ class _GoodsAcceptanceWidget1State extends State<GoodsAcceptanceWidget1> {
                         createdUser: newCreadetUser ?? null,
                         lastUpdatedUser: newLastUpdatedUser ?? null,
                       );
-                      print("new fileee 2   " + newFile.toString());
 
                       Navigator.push(
                           context,
@@ -289,40 +288,7 @@ class _GoodsAcceptanceWidget1State extends State<GoodsAcceptanceWidget1> {
                           buildDividerField(),
                           buildDividerField(),
                           buildDividerField(),
-                          Center(
-                            child: !kIsWeb &&
-                                    defaultTargetPlatform ==
-                                        TargetPlatform.android
-                                ? FutureBuilder<void>(
-                                    future: imageManager.retrieveLostData(),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<void> snapshot) {
-                                      switch (snapshot.connectionState) {
-                                        case ConnectionState.none:
-                                        case ConnectionState.waiting:
-                                          return const Text(
-                                            'Fotoğraf test',
-                                            textAlign: TextAlign.center,
-                                          );
-                                        case ConnectionState.done:
-                                          return _previewImages();
-                                        default:
-                                          if (snapshot.hasError) {
-                                            return Text(
-                                              'Pick image/video error: ${snapshot.error}}',
-                                              textAlign: TextAlign.center,
-                                            );
-                                          } else {
-                                            return const Text(
-                                              'Video test',
-                                              textAlign: TextAlign.center,
-                                            );
-                                          }
-                                      }
-                                    },
-                                  )
-                                : const Text("elseee"),
-                          )
+                          buildImagePreview()
                         ],
                       )),
                 ])),
@@ -347,6 +313,40 @@ class _GoodsAcceptanceWidget1State extends State<GoodsAcceptanceWidget1> {
               child: CircularProgressIndicator(),
             ),
           );
+  }
+
+  Center buildImagePreview() {
+    return Center(
+      child: !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+          ? FutureBuilder<void>(
+              future: imageManager.retrieveLostData(),
+              builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return const Text(
+                      'Fotoğraf test',
+                      textAlign: TextAlign.center,
+                    );
+                  case ConnectionState.done:
+                    return _previewImages();
+                  default:
+                    if (snapshot.hasError) {
+                      return Text(
+                        'Pick image/video error: ${snapshot.error}}',
+                        textAlign: TextAlign.center,
+                      );
+                    } else {
+                      return const Text(
+                        'Video test',
+                        textAlign: TextAlign.center,
+                      );
+                    }
+                }
+              },
+            )
+          : const Text("elseee"),
+    );
   }
 
   Widget buildDispatchSerialField(String serial) {
@@ -587,4 +587,3 @@ class _GoodsAcceptanceWidget1State extends State<GoodsAcceptanceWidget1> {
 
   // }
 }
-//http://erp._.com.tr/api/PurchaseRequestCompany?%24orderby=deadline%20desc&%24top=50&%24select=id%2CpurchaseRequestTrackId%2Cdeadline&%24expand=purchaseRequestTrack(%24select%3Dcode)&%24filter=(dataStatus%20eq%20%27Activated%27)%20and%20(companyId%20eq%205)%20and%20(purchaseRequestTrack%2FdataStatus%20eq%20%27Activated%27)%20and%20(purchaseRequestCompanyOffers%2Fany(b%3Ab%2FisAccepted%20eq%20true%20and%20b%2FdataStatus%20eq%20%27Activated%27%20and%20b%2FpurchaseRequestStock%2FpurchaseRequestTrackId%20gt%200%20and%20b%2FpurchaseRequestStock%2FpurchaseRequestTrack%2FlastMovement%2FpurchaseRequestStepId%20ne%20%27GoodsAcceptence%27)%20eq%20true)&%24count=true

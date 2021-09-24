@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:erp_mockup/environments/environment.dart';
+import 'package:erp_mockup/models/dispatch_model/dispatch_model.dart';
+import 'package:erp_mockup/models/new_dispatch_model/new_dispatch_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:erp-mockup___erp/environments/environment.dart';
-import 'package:erp-mockup___erp/models/dispatch_model/dispatch_model.dart';
-import 'package:erp-mockup___erp/models/new_dispatch_model/new_dispatch_model.dart';
 
 class DispatchService {
   List<int>? receiptNumbers;

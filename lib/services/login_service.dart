@@ -2,8 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:erp-mockup___erp/environments/environment.dart';
-
+import 'package:erp_mockup/environments/environment.dart';
 import 'package:http/http.dart' as http;
 
 class LoginService {

@@ -1,11 +1,11 @@
-import 'package:erp-mockup___erp/helpers/locale_manager.dart';
+import 'package:erp_mockup/helpers/locale_manager.dart';
 
 class Environment {
   static String tokenValue =
       LocaleManager.instance.getStringValue(PreferencesKeys.TOKEN);
   Environment();
 
-  static const baseUrl = 'baseapiurl';
+  static const baseUrl = 'base_api_url';
   static var apiHeader = {
     "api-version": "1.0",
     "content-type": "application/json; charset=utf-8",
