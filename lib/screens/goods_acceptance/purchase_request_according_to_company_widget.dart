@@ -95,122 +95,133 @@ class _PurchaseRequestAccordingToCompanyState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: ElevatedButton(
-              child: const Text("➕ İrsaliye Oluştur"),
-              onPressed: () {
-                for (int i = 0;
-                    i < purchaseRequestModelListOriginal.length;
-                    i++) {
-                  if (purchaseRequestModelListOriginal[i].isSelected) {
-                    selectedRequestList
-                        .add(purchaseRequestModelListOriginal[i].id);
-                  }
-                }
-
-                selectedRequestList.isEmpty
-                    ? ERPToastr.buildToast(
-                        "Önce Seçim Yapmalısınız!", Colors.red.shade400)
-                    : Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => GoodsAcceptanceWidget1(
-                                    selectedRequest: selectedRequestList)))
-                        .then((value) => selectedRequestList.clear());
-              },
-              style: ERPStyle.ERPsuccessElevatedButtonStyle,
-            ),
-          ),
-        ],
-        backgroundColor: Colors.black54,
-        title: TextField(
-          controller: txtSearch,
-          onChanged: (value) {
-            purchaseRequestTrackModelFilter.clear();
-            for (var item in purchaseRequestModelListOriginal) {
-              if (item.purchaseRequestTrack.code
-                  .toLowerCase()
-                  .startsWith(value.toLowerCase())) {
-                purchaseRequestTrackModelFilter.add(item);
-                setState(() {});
-              } else {}
-            }
-          },
-          cursorColor: Colors.black,
-          decoration: const InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            hintText: "Fişlerde Aramak İçin Dokun...",
-            hintStyle: TextStyle(color: Colors.black),
-          ),
-        ),
-      ),
+      appBar: buildAppBar(context),
       body: purchaseRequestTrackModelFilter == []
-          ? const Center(child: CircularProgressIndicator())
-          : Container(
-              alignment: Alignment.topCenter,
-              margin: const EdgeInsets.only(top: 10, left: 5),
-              child: ListView(scrollDirection: Axis.vertical, children: [
-                DataTable(
-                    dividerThickness: 4,
-                    onSelectAll: (value) {},
-                    showBottomBorder: true,
-                    columns: [
-                      DataColumn(label: Text(ERPStrings.SECIM_ALANI)),
-                      DataColumn(label: Text(ERPStrings.FIS_NUMARASI)),
-                      DataColumn(label: Text(ERPStrings.TERMIN_TARIHI))
-                    ],
-                    rows: purchaseRequestTrackModelFilter
-                        .map((element) => DataRow(
-                              cells: [
-                                DataCell(Checkbox(
-                                  splashRadius: 50,
-                                  value: element.isSelected,
-                                  onChanged: (value) {
-                                    for (int i = 0;
-                                        i <
-                                            purchaseRequestModelListOriginal
-                                                .length;
-                                        i++) {
-                                      if (element.id ==
-                                          purchaseRequestModelListOriginal[i]
-                                              .id) {
-                                        purchaseRequestModelListOriginal[i]
-                                                .isSelected =
-                                            !purchaseRequestModelListOriginal[i]
-                                                .isSelected;
-                                      }
-
-                                      setState(() {});
-                                    }
-                                  },
-                                )),
-                                DataCell(
-                                  Text("🔎  " +
-                                      element.purchaseRequestTrack.code
-                                          .toString()),
-                                  onTap: () {
-                                    getPurchaseRequestDetail(element.id).then(
-                                        (value) =>
-                                            buildPurchaseRequestDetailAlertDialog());
-                                  },
-                                ),
-                                DataCell(Text(
-                                    element.deadline.split("T")[0].toString())),
-                              ],
-                              selected: element.isSelected,
-                            ))
-                        .toList())
-              ])),
+          ? buildCircularProgressIndicator()
+          : buildDataArea(),
     );
   }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      actions: [
+        Container(
+          margin: const EdgeInsets.all(10),
+          child: ElevatedButton(
+            child: const Text("➕ İrsaliye Oluştur"),
+            onPressed: () {
+              for (int i = 0;
+                  i < purchaseRequestModelListOriginal.length;
+                  i++) {
+                if (purchaseRequestModelListOriginal[i].isSelected) {
+                  selectedRequestList
+                      .add(purchaseRequestModelListOriginal[i].id);
+                }
+              }
+
+              selectedRequestList.isEmpty
+                  ? ERPToastr.buildToast(
+                      "Önce Seçim Yapmalısınız!", Colors.red.shade400)
+                  : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GoodsAcceptanceWidget1(
+                                  selectedRequest: selectedRequestList)))
+                      .then((value) => selectedRequestList.clear());
+            },
+            style: ERPStyle.ERPsuccessElevatedButtonStyle,
+          ),
+        ),
+      ],
+      backgroundColor: Colors.black54,
+      title: buildFilterTextField(),
+    );
+  }
+
+  TextField buildFilterTextField() {
+    return TextField(
+      controller: txtSearch,
+      onChanged: (value) {
+        purchaseRequestTrackModelFilter.clear();
+        for (var item in purchaseRequestModelListOriginal) {
+          if (item.purchaseRequestTrack.code
+              .toLowerCase()
+              .startsWith(value.toLowerCase())) {
+            purchaseRequestTrackModelFilter.add(item);
+            setState(() {});
+          } else {}
+        }
+      },
+      cursorColor: Colors.black,
+      decoration: const InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        icon: Icon(
+          Icons.search,
+          color: Colors.white,
+        ),
+        hintText: "Fişlerde Aramak İçin Dokun...",
+        hintStyle: TextStyle(color: Colors.black),
+      ),
+    );
+  }
+
+  Container buildDataArea() {
+    return Container(
+        alignment: Alignment.topCenter,
+        margin: const EdgeInsets.only(top: 10, left: 5),
+        child: ListView(scrollDirection: Axis.vertical, children: [
+          DataTable(
+              dividerThickness: 4,
+              onSelectAll: (value) {},
+              showBottomBorder: true,
+              columns: [
+                DataColumn(label: Text(ERPStrings.SECIM_ALANI)),
+                DataColumn(label: Text(ERPStrings.FIS_NUMARASI)),
+                DataColumn(label: Text(ERPStrings.TERMIN_TARIHI))
+              ],
+              rows: purchaseRequestTrackModelFilter
+                  .map((element) => DataRow(
+                        cells: [
+                          DataCell(Checkbox(
+                            splashRadius: 50,
+                            value: element.isSelected,
+                            onChanged: (value) {
+                              for (int i = 0;
+                                  i < purchaseRequestModelListOriginal.length;
+                                  i++) {
+                                if (element.id ==
+                                    purchaseRequestModelListOriginal[i].id) {
+                                  purchaseRequestModelListOriginal[i]
+                                          .isSelected =
+                                      !purchaseRequestModelListOriginal[i]
+                                          .isSelected;
+                                }
+
+                                setState(() {});
+                              }
+                            },
+                          )),
+                          DataCell(
+                            Text("🔎  " +
+                                element.purchaseRequestTrack.code.toString()),
+                            onTap: () {
+                              getPurchaseRequestDetail(element.id).then(
+                                  (value) =>
+                                      buildPurchaseRequestDetailAlertDialog());
+                            },
+                          ),
+                          DataCell(
+                              Text(element.deadline.split("T")[0].toString())),
+                        ],
+                        selected: element.isSelected,
+                      ))
+                  .toList())
+        ]));
+  }
+
+  Center buildCircularProgressIndicator() =>
+      const Center(child: CircularProgressIndicator());
 
   buildPurchaseRequestDetailAlertDialog() {
     return showDialog(

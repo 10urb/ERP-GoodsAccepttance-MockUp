@@ -60,110 +60,90 @@ class _ExpectedCompaniesWidgetState extends State<ExpectedCompaniesWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              splashColor: Colors.amber,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const HomeScreenWidget()));
-              },
-              icon: const Icon(Icons.home)),
-        ],
-        title: TextField(
-          controller: txtExpectedCompaniesSearch,
-          onChanged: (value) {
-            modelListFilter.clear();
-            for (var item in modelListOriginal) {
-              if (item.unvan.toLowerCase().startsWith(value.toLowerCase())) {
-                modelListFilter.add(item);
-              }
-              setState(() {});
-            }
-          },
-          cursorColor: Colors.black,
-          decoration: const InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            hintText: "Beklenen Firmalarda Aramak İçin Dokun...",
-            hintStyle: TextStyle(color: Colors.black),
-          ),
-        ),
-        backgroundColor: Colors.black54,
-      ),
+      appBar: buildAppBar(context),
       drawer: ERPMainDrawer.buildMainDrawer(context),
       body: modelListFilter.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.amber,
-              ),
-            )
-          // : ListView.builder(
-          //     padding: const EdgeInsets.all(3),
-          //     itemCount: modelListFilter.length,
-          //     itemBuilder: (context, i) {
-          //       return Card(
-          //         shadowColor: Colors.amberAccent.shade100,
-          //         margin: const EdgeInsets.all(10.0),
-          //         elevation: 20,
-          //         shape: RoundedRectangleBorder(
-          //             borderRadius: BorderRadius.circular(10)),
-          //         child: InkWell(
-          //           splashColor: Colors.amber.withAlpha(500),
-          //           onTap: () {
-          //             Navigator.push(
-          //                 context,
-          //                 MaterialPageRoute(
-          //                     builder: (context) =>
-          //                         PurchaseRequestAccordingToCompany(
-          //                             sayi: modelListFilter[i].id)));
-          //           },
-          //           child: SizedBox(
-          //             width: 70,
-          //             height: 28,
-          //             child: Text(
-          //               modelListFilter[i].unvan,
-          //               textAlign: TextAlign.center,
-          //               style: const TextStyle(
-          //                 fontSize: 18,
-          //                 color: Colors.black,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       );
-          //     },
-          //   ),
-          : DataTable(
-              dividerThickness: 5,
-              showBottomBorder: true,
-              columns: const [
-                DataColumn(
-                    label: Text(
-                  "Firma Seçiniz...",
-                )),
-              ],
-              rows: modelListFilter
-                  .map((element) => DataRow(cells: [
-                        DataCell(
-                          Text(element.unvan),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        PurchaseRequestAccordingToCompany(
-                                            sayi: element.id)));
-                          },
-                        )
-                      ]))
-                  .toList()),
+          ? buildCircularProgressIndicator()
+          : buildExpectedCompaniesDataTable(context),
+    );
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      actions: [
+        IconButton(
+            splashColor: Colors.amber,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HomeScreenWidget()));
+            },
+            icon: const Icon(Icons.home)),
+      ],
+      title: buildFilterTextField(),
+      backgroundColor: Colors.black54,
+    );
+  }
+
+  TextField buildFilterTextField() {
+    return TextField(
+      controller: txtExpectedCompaniesSearch,
+      onChanged: (value) {
+        modelListFilter.clear();
+        for (var item in modelListOriginal) {
+          if (item.unvan.toLowerCase().startsWith(value.toLowerCase())) {
+            modelListFilter.add(item);
+          }
+          setState(() {});
+        }
+      },
+      cursorColor: Colors.black,
+      decoration: const InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        icon: Icon(
+          Icons.search,
+          color: Colors.white,
+        ),
+        hintText: "Beklenen Firmalarda Aramak İçin Dokun...",
+        hintStyle: TextStyle(color: Colors.black),
+      ),
+    );
+  }
+
+  DataTable buildExpectedCompaniesDataTable(BuildContext context) {
+    return DataTable(
+        dividerThickness: 5,
+        showBottomBorder: true,
+        columns: const [
+          DataColumn(
+              label: Text(
+            "Firma Seçiniz...",
+          )),
+        ],
+        rows: modelListFilter
+            .map((element) => DataRow(cells: [
+                  DataCell(
+                    Text(element.unvan),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PurchaseRequestAccordingToCompany(
+                                      sayi: element.id)));
+                    },
+                  )
+                ]))
+            .toList());
+  }
+
+  Center buildCircularProgressIndicator() {
+    return const Center(
+      child: CircularProgressIndicator(
+        backgroundColor: Colors.amber,
+      ),
     );
   }
 }

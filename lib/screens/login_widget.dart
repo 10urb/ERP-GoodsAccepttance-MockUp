@@ -70,79 +70,91 @@ class _LoginState extends State<LoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.blue.shade300,
-          actions: [
-            // Image.network(
-            //   Asset.erp-mockupLogo,
-            //   scale: 6.5,
-            //   alignment: Alignment.center,
-            // ),
-          ],
-        ),
-        bottomNavigationBar: BottomAppBar(
-            color: Colors.blue.shade300,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                textDirection: TextDirection.rtl,
+        appBar: buildAppBar(),
+        bottomNavigationBar: buildBottomAppBar(context),
+        body: buildCard(context));
+  }
+
+  Card buildCard(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(MediaQuery.of(context).size.width / 9),
+      elevation: 200,
+      shadowColor: Colors.blue.shade200,
+      child: ListView(
+        children: [
+          Image.network(
+            Asset.logoBig,
+            scale: 1,
+          ),
+          Container(
+            margin: EdgeInsets.all(MediaQuery.of(context).size.width / 20),
+            child: Form(
+              key: formKey,
+              child: Column(
                 children: [
                   Text(
-                    "2021©erp-mockup",
+                    title,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width / 65,
-                        fontStyle: FontStyle.normal,
-                        color: Colors.white70),
+                        color: Colors.blue,
+                        fontSize: MediaQuery.of(context).size.width / 40),
+                  ),
+                  buildDividerTop(),
+                  buildDividerTop(),
+                  buildEmailField(),
+                  buildPasswordField(),
+                  buildDividerTop(),
+                  buildSubmitButton(),
+                  const Divider(
+                    color: Colors.white,
+                    height: 150,
+                  ),
+                  Image.network(
+                    Asset.logoSmall,
+                    scale: 6.5,
+                    alignment: Alignment.center,
                   ),
                 ],
               ),
-            )),
-        body: Card(
-          margin: EdgeInsets.all(MediaQuery.of(context).size.width / 9),
-          elevation: 200,
-          shadowColor: Colors.blue.shade200,
-          child: ListView(
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  BottomAppBar buildBottomAppBar(BuildContext context) {
+    return BottomAppBar(
+        color: Colors.blue.shade300,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            textDirection: TextDirection.rtl,
             children: [
-              Image.network(
-                Asset.logoBig,
-                scale: 1,
-              ),
-              Container(
-                margin: EdgeInsets.all(MediaQuery.of(context).size.width / 20),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      Text(
-                        title,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: MediaQuery.of(context).size.width / 40),
-                      ),
-                      buildDividerTop(),
-                      buildDividerTop(),
-                      buildEmailField(),
-                      buildPasswordField(),
-                      buildDividerTop(),
-                      buildSubmitButton(),
-                      const Divider(
-                        color: Colors.white,
-                        height: 150,
-                      ),
-                      Image.network(
-                        Asset.logoSmall,
-                        scale: 6.5,
-                        alignment: Alignment.center,
-                      ),
-                    ],
-                  ),
-                ),
+              Text(
+                "2021©erp-mockup",
+                style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 65,
+                    fontStyle: FontStyle.normal,
+                    color: Colors.white70),
               ),
             ],
           ),
         ));
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      centerTitle: true,
+      backgroundColor: Colors.blue.shade300,
+      // actions: [
+      // Image.network(
+      //   Asset.erp-mockupLogo,
+      //   scale: 6.5,
+      //   alignment: Alignment.center,
+      // ),
+      // ],
+    );
   }
 
   Widget buildEmailField() {

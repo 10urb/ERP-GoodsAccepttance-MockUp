@@ -18,7 +18,6 @@ class UploadService {
       'Content-Lenght': File(photoFile.path).lengthSync().toString(),
       "Authorization": "Bearer ${Environment.tokenValue}",
     };
-    print("APİ HEADER" + apiHeaderFormData.toString());
     dio.FormData formData = dio.FormData.fromMap({
       "file":
           await dio.MultipartFile.fromFile(photoFile.path, filename: fileName),
@@ -65,16 +64,8 @@ class UploadService {
     // send
     var response = await request.send();
 
-    print(response.statusCode);
-
     // listen for response
-    response.stream.transform(utf8.decoder).listen((value) {
-      print(value);
-    });
-    print(response.contentLength);
-    print(response.stream);
-    print(response.headers);
-    print(response.statusCode);
+    response.stream.transform(utf8.decoder).listen((value) {});
 
     return response;
   }

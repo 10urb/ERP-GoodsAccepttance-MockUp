@@ -39,13 +39,13 @@ class _GoodsAcceptanceWidget1State extends State<GoodsAcceptanceWidget1> {
   final txtDescription = TextEditingController();
 
   List<RegisterResponseValue> registerResponseValueList = [];
-  late ImageManager imageManager;
 
+  late ImageManager imageManager;
   late NewDispatch newDispatch;
 
   bool? newIsBillControlFinish;
-  var register;
-  var currency;
+
+  var register, currency;
 
   Widget _previewImages() {
     final String? retrieveError = imageManager.getRetrieveError();
@@ -126,7 +126,7 @@ class _GoodsAcceptanceWidget1State extends State<GoodsAcceptanceWidget1> {
     await registerService
         .getRegisterWithId(registerId)
         .then((value) => json = jsonDecode(value.body));
-    print(generateDispatchModelList!.val!.isBilled);
+
     setState(() {});
     return json['unvan'];
   }
@@ -154,14 +154,9 @@ class _GoodsAcceptanceWidget1State extends State<GoodsAcceptanceWidget1> {
   Future postImage() async {
     UploadService uploadService = UploadService();
     var response = await uploadService.postImage(imageManager.imageFile!);
-    print(response.data);
 
-    print(response.extra);
-    print(response.headers);
-    print(response.statusCode);
     if (response.statusCode == 200) {
       var json = FileModel.fromJson(jsonDecode(response.toString()));
-      print(json.fileName);
       return json.fileName;
     }
   }
@@ -185,134 +180,134 @@ class _GoodsAcceptanceWidget1State extends State<GoodsAcceptanceWidget1> {
   Widget build(BuildContext context) {
     return generateDispatchModelList != null
         ? Scaffold(
-            appBar: AppBar(
-              actions: [
-                Container(
-                  margin:
-                      EdgeInsets.all(MediaQuery.of(context).size.width / 90),
-                  child: ElevatedButton(
-                    child: const Text("Kaydet Ve Devam Et →"),
-                    onPressed: () {
-                      newDispatch = NewDispatch(
-                        id: 0,
-                        companyCurrentId: newCompanyCurrentId ??
-                            generateDispatchModelList!.val!.companyCurrentId,
-                        currencyId: newCurrencyId ??
-                            generateDispatchModelList!.val!.currencyId,
-                        currencyRate: 1,
-                        dispatchTypeId: newDispatchTypeId ??
-                            generateDispatchModelList!.val!.dispatchTypeId,
-                        serial:
-                            newSerial ?? generateDispatchModelList!.val!.serial,
-                        detail:
-                            newDetail ?? generateDispatchModelList!.val!.detail,
-                        isDone:
-                            newIsDone ?? generateDispatchModelList!.val!.isDone,
-                        sequence: int.tryParse(newSequence.toString()) ??
-                            generateDispatchModelList!.val!.sequence,
-                        file: newFile,
-                        isBilled: newIsBilled ??
-                            generateDispatchModelList!.val!.isBilled,
-                        updateDate:
-                            DateTime.tryParse(newUpdateDate.toString()) ??
-                                generateDispatchModelList!.val!.updateDate,
-                        shipmentDate:
-                            DateTime.tryParse(newShipmentDate.toString()) ??
-                                generateDispatchModelList!.val!.shipmentDate,
-                        status: newStatus,
-                        isBillControlFinish: newIsBillControlFinish ??
-                            generateDispatchModelList!.val!.isBillControlFinish,
-                        companyCurrent: newCompanyCurrent ?? null,
-                        currency: newCurrency ?? null,
-                        sonOnayHareket: newSonOnayHareket ?? null,
-                        createdUserId: newCreatedUserId ?? null,
-                        lastUpdatedUserId: newLastUpdatedUserId ?? null,
-                        dataStatus: generateDispatchModelList!.val!.dataStatus,
-                        createdAt: newCreatedAt,
-                        lastUpdatedAt: newLastUpdateAt ?? null,
-                        createdUser: newCreadetUser ?? null,
-                        lastUpdatedUser: newLastUpdatedUser ?? null,
-                      );
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GoodsAcceptanceWidget2(
-                                  newDispatch: newDispatch,
-                                  generateDispatchModel:
-                                      generateDispatchModelList,
-                                  selectedRequest: widget.selectedRequest)));
-                    },
-                    style: ERPStyle.ERPsuccessElevatedButtonStyle,
-                  ),
-                ),
-              ],
-              centerTitle: true,
-              title: const Text("Mal Kabul - İrsaliye"),
-              backgroundColor: Colors.black54,
-            ),
-            body: Center(
-                child: ListView(
-                    padding:
-                        EdgeInsets.all(MediaQuery.of(context).size.height / 25),
-                    children: [
-                  Form(
-                      key: formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(10),
-                          ),
-                          buildDividerField(),
-                          buildRegisterTitleDropDownSearchField(),
-                          buildDividerField(),
-                          buildIsBilledDropDownSearchField(),
-                          buildDividerField(),
-                          buildDispatchSerialField(generateDispatchModelList!
-                              .val!.serial
-                              .toString()),
-                          buildDividerField(),
-                          buildSequenceField(generateDispatchModelList!
-                              .val!.sequence
-                              .toString()),
-                          buildDividerField(),
-                          buildCurrencyRateField(currency.toString()),
-                          buildDividerField(),
-                          buildDescriptionField(
-                              generateDispatchModelList!.val!.detail),
-                          buildDividerField(),
-                          buildUpdaDateDateTimeFormField(),
-                          buildDividerField(),
-                          buildShipmentDateDateTimeFormField(),
-                          buildDividerField(),
-                          buildDividerField(),
-                          buildDividerField(),
-                          buildImagePreview()
-                        ],
-                      )),
-                ])),
+            appBar: buildAppBar(context),
+            body: buildDataArea(context),
             floatingActionButton:
                 newIsBilled == true ? buildImageLoadButton() : null,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
           )
-        : Scaffold(
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerTop,
-            floatingActionButton: FloatingActionButton.extended(
-              elevation: 70,
-              label: const Text(
-                  "İnternet bağlantınızı Kontrol Edin Ve Tekrar Deneyin"),
-              backgroundColor: Colors.amberAccent,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            body: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+        : buildIfDataIsNotCome(context);
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      actions: [
+        Container(
+          margin: EdgeInsets.all(MediaQuery.of(context).size.width / 90),
+          child: ElevatedButton(
+            child: const Text("Kaydet Ve Devam Et →"),
+            onPressed: () {
+              newDispatch = NewDispatch(
+                id: 0,
+                companyCurrentId: newCompanyCurrentId ??
+                    generateDispatchModelList!.val!.companyCurrentId,
+                currencyId:
+                    newCurrencyId ?? generateDispatchModelList!.val!.currencyId,
+                currencyRate: 1,
+                dispatchTypeId: newDispatchTypeId ??
+                    generateDispatchModelList!.val!.dispatchTypeId,
+                serial: newSerial ?? generateDispatchModelList!.val!.serial,
+                detail: newDetail ?? generateDispatchModelList!.val!.detail,
+                isDone: newIsDone ?? generateDispatchModelList!.val!.isDone,
+                sequence: int.tryParse(newSequence.toString()) ??
+                    generateDispatchModelList!.val!.sequence,
+                file: newFile,
+                isBilled:
+                    newIsBilled ?? generateDispatchModelList!.val!.isBilled,
+                updateDate: DateTime.tryParse(newUpdateDate.toString()) ??
+                    generateDispatchModelList!.val!.updateDate,
+                shipmentDate: DateTime.tryParse(newShipmentDate.toString()) ??
+                    generateDispatchModelList!.val!.shipmentDate,
+                status: newStatus,
+                isBillControlFinish: newIsBillControlFinish ??
+                    generateDispatchModelList!.val!.isBillControlFinish,
+                companyCurrent: newCompanyCurrent ?? null,
+                currency: newCurrency ?? null,
+                sonOnayHareket: newSonOnayHareket ?? null,
+                createdUserId: newCreatedUserId ?? null,
+                lastUpdatedUserId: newLastUpdatedUserId ?? null,
+                dataStatus: generateDispatchModelList!.val!.dataStatus,
+                createdAt: newCreatedAt,
+                lastUpdatedAt: newLastUpdateAt ?? null,
+                createdUser: newCreadetUser ?? null,
+                lastUpdatedUser: newLastUpdatedUser ?? null,
+              );
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => GoodsAcceptanceWidget2(
+                          newDispatch: newDispatch,
+                          generateDispatchModel: generateDispatchModelList,
+                          selectedRequest: widget.selectedRequest)));
+            },
+            style: ERPStyle.ERPsuccessElevatedButtonStyle,
+          ),
+        ),
+      ],
+      centerTitle: true,
+      title: const Text("Mal Kabul - İrsaliye"),
+      backgroundColor: Colors.black54,
+    );
+  }
+
+  Scaffold buildIfDataIsNotCome(BuildContext context) {
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      floatingActionButton: FloatingActionButton.extended(
+        elevation: 70,
+        label:
+            const Text("İnternet bağlantınızı Kontrol Edin Ve Tekrar Deneyin"),
+        backgroundColor: Colors.amberAccent,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      body: const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Center buildDataArea(BuildContext context) {
+    return Center(
+        child: ListView(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.height / 25),
+            children: [
+          Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                  ),
+                  buildDividerField(),
+                  buildRegisterTitleDropDownSearchField(),
+                  buildDividerField(),
+                  buildIsBilledDropDownSearchField(),
+                  buildDividerField(),
+                  buildDispatchSerialField(
+                      generateDispatchModelList!.val!.serial.toString()),
+                  buildDividerField(),
+                  buildSequenceField(
+                      generateDispatchModelList!.val!.sequence.toString()),
+                  buildDividerField(),
+                  buildCurrencyRateField(currency.toString()),
+                  buildDividerField(),
+                  buildDescriptionField(generateDispatchModelList!.val!.detail),
+                  buildDividerField(),
+                  buildUpdaDateDateTimeFormField(),
+                  buildDividerField(),
+                  buildShipmentDateDateTimeFormField(),
+                  buildDividerField(),
+                  buildDividerField(),
+                  buildDividerField(),
+                  buildImagePreview()
+                ],
+              )),
+        ]));
   }
 
   Center buildImagePreview() {

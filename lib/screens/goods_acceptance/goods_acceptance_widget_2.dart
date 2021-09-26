@@ -150,7 +150,13 @@ class _GoodAcceptanceWidgetState extends State<GoodsAcceptanceWidget2> {
   @override
   void initState() {
     super.initState();
-//Listeye elemanları doldurur ek olarak toplam fiyatları hesaplar
+    addItemsNewListAndCalculateTotalPrices();
+    getUnits();
+    getStocks();
+    getStores();
+  }
+
+  void addItemsNewListAndCalculateTotalPrices() {
     for (var element in widget.generateDispatchModel!.items!) {
       dispatchItemsFilter.add(element);
       setState(() {});
@@ -168,245 +174,256 @@ class _GoodAcceptanceWidgetState extends State<GoodsAcceptanceWidget2> {
         totalWithTax == null ? null : newTotalPriceWithTax += totalWithTax;
       }
     }
-    getUnits();
-    getStocks();
-    getStores();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ERPStyle.ERPappBarBackGroundColor,
-        actions: [
-          Container(
-            margin: EdgeInsets.all(MediaQuery.of(context).size.width / 90),
-            child: buildRemoveLastElevatedButton(),
+      appBar: buildAppBar(context),
+      floatingActionButton: buildAddProductFloatingActionButton(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: buildTotalPricesBottomNavigationBar(),
+      body: widget.generateDispatchModel == null
+          ? buildCircularProgressIndicator()
+          : buildDataArea(context),
+    );
+  }
+
+  ListView buildDataArea(BuildContext context) {
+    return ListView(scrollDirection: Axis.horizontal, children: [
+      InteractiveViewer(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              showCheckboxColumn: true,
+              dataRowHeight: 40,
+              horizontalMargin: MediaQuery.of(context).size.width / 50,
+              sortColumnIndex: 0,
+              headingRowColor: MaterialStateColor.resolveWith(
+                  (states) => Colors.grey.shade100),
+              columnSpacing: 50,
+              dividerThickness: 2,
+              showBottomBorder: true,
+              columns: [
+                DataColumn(label: Text(ERPStrings.URUN_ADI)),
+                DataColumn(label: Text(ERPStrings.KONTROL_ALANI)),
+                DataColumn(label: Text(ERPStrings.MIKTAR)),
+                DataColumn(label: Text(ERPStrings.BIRIM)),
+                DataColumn(label: Text(ERPStrings.TOPLAM_MIKTAR)),
+                DataColumn(label: Text(ERPStrings.ALINMIS_MIKTAR)),
+                DataColumn(label: Text(ERPStrings.BIRIM_FIYATI)),
+                DataColumn(label: Text(ERPStrings.KDV_ORANI)),
+                DataColumn(label: Text(ERPStrings.DEPO)),
+                DataColumn(label: Text(ERPStrings.ACIKLAMA)),
+                DataColumn(label: Text(ERPStrings.TALEP_EDEN)),
+              ],
+              rows: dispatchItemsFilter.map((element) {
+                return DataRow(cells: [
+                  buildStockNameDataCellField(element.stockName),
+                  buildSelectionAreaDataCellField(
+                      element.isSelected, element.stockId),
+                  buildAmountDataCellField(element.amount, element),
+                  buildUnitNameDataCellField(element.unitName, element),
+                  buildTotalAmountDataCellField(element.totalAmount),
+                  buildAcceptedAmountDataCellField(element.acceptedAmount),
+                  buildPriceDataCellField(element.price),
+                  buildTaxRateDataCellField(element.taxRate),
+                  buildStoreNameDataCellField(element.storeName, element),
+                  buildDescriptionDataCellField(element.aciklama),
+                  buildRequesterUserDataCellField(element.requesterUser),
+                ]);
+              }).toList(),
+            ),
           ),
-          PopupMenuButton(
-            icon: const Icon(Icons.arrow_drop_down),
-            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-              PopupMenuItem(
-                height: 50,
-                child: const Text('Antalya Hal Fiyat Güncelle'),
-                onTap: () {
-                  getMarketPrice().whenComplete(() {
-                    for (var dispatch in dispatchItemsFilter) {
-                      for (var market in marketPlaceValue) {
-                        if (market.stockMarketplacePrice?.stockId == null) {
-                          continue;
-                        } else {
-                          if (dispatch.stockId ==
-                              market.stockMarketplacePrice!.stockId) {
-                            var newPrice2;
-                            if (market.stockMarketplacePrice!
-                                    .stockMarketplaceGroupDiscount!.discount1 !=
-                                null) {
-                              // ignore: avoid_print
-                              print(dispatch.price.toString() + "eski  FİYAT");
+        ),
+      ),
+    ]);
+  }
 
-                              newPrice2 = market.lowestPrice! *
-                                  ((100 -
-                                          market
-                                              .stockMarketplacePrice!
-                                              .stockMarketplaceGroupDiscount!
-                                              .discount1!) /
-                                      100);
-                              // ignore: avoid_print
-                              print(newPrice2.toString() + "YENİ FİYAT");
+  Center buildCircularProgressIndicator() =>
+      const Center(child: CircularProgressIndicator());
 
-                              dispatch.price = newPrice2;
+  BottomNavigationBar buildTotalPricesBottomNavigationBar() {
+    return BottomNavigationBar(
+      items: [
+        BottomNavigationBarItem(
+          tooltip: "Toplam KDV'siz",
+          icon: const Icon(
+            Icons.equalizer,
+          ),
+          label: "Toplam KDV' siz\n" + newTotalPrice.toStringAsFixed(4),
+        ),
+        BottomNavigationBarItem(
+            icon: const Icon(Icons.equalizer),
+            label:
+                "Toplam KDV' li\n" + newTotalPriceWithTax.toStringAsFixed(4)),
+      ],
+    );
+  }
 
-                              setState(() {});
-                            } else {
-                              ERPToastr.buildToast(
-                                  "Fiyatsız Gelmeyen Ürünler Var!",
-                                  Colors.pink.shade400);
-                            }
+  FloatingActionButton buildAddProductFloatingActionButton(
+      BuildContext context) {
+    return FloatingActionButton(
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.green.shade200,
+        onPressed: () {
+          for (var storeValue in storeValueModelList) {
+            if (storeValue.name == newStoreName) {
+              storeValue.id = newStoreId;
+            }
+          }
+          if (isLoaded) {
+            buildAddReceiptItemAlertDialog(
+              context,
+            );
+          } else {
+            ERPToastr.buildToast(
+                "Veriler Yükleniyor, Tekrar Deneyin.", Colors.amber);
+          }
+        });
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: ERPStyle.ERPappBarBackGroundColor,
+      actions: [
+        Container(
+          margin: EdgeInsets.all(MediaQuery.of(context).size.width / 90),
+          child: buildRemoveLastElevatedButton(),
+        ),
+        PopupMenuButton(
+          icon: const Icon(Icons.arrow_drop_down),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+            PopupMenuItem(
+              height: 50,
+              child: const Text('Antalya Hal Fiyat Güncelle'),
+              onTap: () {
+                getMarketPrice().whenComplete(() {
+                  for (var dispatch in dispatchItemsFilter) {
+                    for (var market in marketPlaceValue) {
+                      if (market.stockMarketplacePrice?.stockId == null) {
+                        continue;
+                      } else {
+                        if (dispatch.stockId ==
+                            market.stockMarketplacePrice!.stockId) {
+                          var newPrice2;
+                          if (market.stockMarketplacePrice!
+                                  .stockMarketplaceGroupDiscount!.discount1 !=
+                              null) {
+                            // ignore: avoid_print
+                            print(dispatch.price.toString() + "eski  FİYAT");
+
+                            newPrice2 = market.lowestPrice! *
+                                ((100 -
+                                        market
+                                            .stockMarketplacePrice!
+                                            .stockMarketplaceGroupDiscount!
+                                            .discount1!) /
+                                    100);
+                            // ignore: avoid_print
+                            print(newPrice2.toString() + "YENİ FİYAT");
+
+                            dispatch.price = newPrice2;
+
+                            setState(() {});
+                          } else {
+                            ERPToastr.buildToast(
+                                "Fiyatsız Gelmeyen Ürünler Var!",
+                                Colors.pink.shade400);
                           }
                         }
                       }
                     }
-                  });
-                },
-              ),
-              PopupMenuItem(
-                height: 50,
-                child: const Text('Antalya TUTED Fiyat Güncelle'),
-                onTap: () {},
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.all(MediaQuery.of(context).size.width / 90),
-            child: ElevatedButton(
-              onPressed: () {
-                buildLastConfirmAlertDialog(context);
+                  }
+                });
               },
-              child: const Text("Kaydet Ve Bitir"),
-              onLongPress: () {
-                NewDispatchItem newDispatchItem;
-                for (var item in dispatchItemsFilter) {
-                  newDispatchItem = NewDispatchItem(
-                      acceptedAmount: item.acceptedAmount,
-                      aciklama: item.aciklama,
-                      amount: item.amount,
-                      price: item.price,
-                      stockId: item.stockId,
-                      marka: item.marka,
-                      purchaseRequestId: item.purchaseRequestId,
-                      purchaseRequestStockId: item.purchaseRequestStockId,
-                      receiptNumber: item.receiptNumber,
-                      requesterUser: item.requesterUser,
-                      stockName: item.stockName,
-                      storeId: item.storeId,
-                      storeName: item.storeName,
-                      taxRate: item.taxRate,
-                      totalAmount: item.totalAmount,
-                      trackCode: item.trackCode,
-                      unitId: item.unitId,
-                      unitName: item.unitName);
-                  newDispatchItemsList.add(newDispatchItem);
-                  setState(() {});
-                }
-
-                newPurchaseRequestKeyList = widget.selectedRequest;
-
-                newDispatchModel = NewDispatchModel(
-                    dispatch: widget.newDispatch,
-                    newDispatchItem: newDispatchItemsList,
-                    purchaseRequestKeys: newPurchaseRequestKeyList);
-
-                postNewDispatch(newDispatchModel).then((value) => value == 200
-                    ? ERPToastr.buildToast(
-                        'İşlem Başarılı!', Colors.green.shade400)
-                    : ERPToastr.buildToast(
-                        'İşlem Başarısız!', Colors.red.shade400));
-                print(newDispatchModel.dispatch!.file);
-
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ExpectedCompaniesWidget()));
+            ),
+            PopupMenuItem(
+              height: 50,
+              child: const Text('Antalya TUTED Fiyat Güncelle'),
+              onTap: () {},
+            ),
+          ],
+        ),
+        Container(
+          margin: EdgeInsets.all(MediaQuery.of(context).size.width / 90),
+          child: ElevatedButton(
+            onPressed: () {
+              buildLastConfirmAlertDialog(context);
+            },
+            child: const Text("Kaydet Ve Bitir"),
+            onLongPress: () {
+              NewDispatchItem newDispatchItem;
+              for (var item in dispatchItemsFilter) {
+                newDispatchItem = NewDispatchItem(
+                    acceptedAmount: item.acceptedAmount,
+                    aciklama: item.aciklama,
+                    amount: item.amount,
+                    price: item.price,
+                    stockId: item.stockId,
+                    marka: item.marka,
+                    purchaseRequestId: item.purchaseRequestId,
+                    purchaseRequestStockId: item.purchaseRequestStockId,
+                    receiptNumber: item.receiptNumber,
+                    requesterUser: item.requesterUser,
+                    stockName: item.stockName,
+                    storeId: item.storeId,
+                    storeName: item.storeName,
+                    taxRate: item.taxRate,
+                    totalAmount: item.totalAmount,
+                    trackCode: item.trackCode,
+                    unitId: item.unitId,
+                    unitName: item.unitName);
+                newDispatchItemsList.add(newDispatchItem);
                 setState(() {});
-              },
-              style: ERPStyle.ERPsuccessElevatedButtonStyle,
-            ),
-          ),
-        ],
-        title: TextField(
-          onChanged: (value) {
-            dispatchItemsFilter.clear();
-            for (var item in widget.generateDispatchModel!.items!) {
-              if (item.stockName!
-                  .toLowerCase()
-                  .startsWith(value.toLowerCase())) {
-                dispatchItemsFilter.add(item);
               }
+
+              newPurchaseRequestKeyList = widget.selectedRequest;
+
+              newDispatchModel = NewDispatchModel(
+                  dispatch: widget.newDispatch,
+                  newDispatchItem: newDispatchItemsList,
+                  purchaseRequestKeys: newPurchaseRequestKeyList);
+
+              postNewDispatch(newDispatchModel).then((value) => value == 200
+                  ? ERPToastr.buildToast(
+                      'İşlem Başarılı!', Colors.green.shade400)
+                  : ERPToastr.buildToast(
+                      'İşlem Başarısız!', Colors.red.shade400));
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ExpectedCompaniesWidget()));
               setState(() {});
-            }
-          },
-          decoration: const InputDecoration(
-            filled: true,
-            fillColor: Colors.white,
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            hintText: "Ürün Adı İle Aramak İçin Dokun...",
-            hintStyle: TextStyle(color: Colors.black),
+            },
+            style: ERPStyle.ERPsuccessElevatedButtonStyle,
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          backgroundColor: Colors.green.shade200,
-          onPressed: () {
-            for (var storeValue in storeValueModelList) {
-              if (storeValue.name == newStoreName) {
-                storeValue.id = newStoreId;
-              }
+      ],
+      title: TextField(
+        onChanged: (value) {
+          dispatchItemsFilter.clear();
+          for (var item in widget.generateDispatchModel!.items!) {
+            if (item.stockName!.toLowerCase().startsWith(value.toLowerCase())) {
+              dispatchItemsFilter.add(item);
             }
-            if (isLoaded) {
-              buildAddReceiptItemAlertDialog(
-                context,
-              );
-            } else {
-              ERPToastr.buildToast(
-                  "Veriler Yükleniyor, Tekrar Deneyin.", Colors.amber);
-            }
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            tooltip: "Toplam KDV'siz",
-            icon: const Icon(
-              Icons.equalizer,
-            ),
-            label: "Toplam KDV' siz\n" + newTotalPrice.toStringAsFixed(4),
+            setState(() {});
+          }
+        },
+        decoration: const InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          icon: Icon(
+            Icons.search,
+            color: Colors.white,
           ),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.equalizer),
-              label:
-                  "Toplam KDV' li\n" + newTotalPriceWithTax.toStringAsFixed(4)),
-        ],
+          hintText: "Ürün Adı İle Aramak İçin Dokun...",
+          hintStyle: TextStyle(color: Colors.black),
+        ),
       ),
-      body: widget.generateDispatchModel == null
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(scrollDirection: Axis.horizontal, children: [
-              InteractiveViewer(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      showCheckboxColumn: true,
-                      dataRowHeight: 40,
-                      horizontalMargin: MediaQuery.of(context).size.width / 50,
-                      sortColumnIndex: 0,
-                      headingRowColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.grey.shade100),
-                      columnSpacing: 50,
-                      dividerThickness: 2,
-                      showBottomBorder: true,
-                      columns: [
-                        DataColumn(label: Text(ERPStrings.URUN_ADI)),
-                        DataColumn(label: Text(ERPStrings.KONTROL_ALANI)),
-                        DataColumn(label: Text(ERPStrings.MIKTAR)),
-                        DataColumn(label: Text(ERPStrings.BIRIM)),
-                        DataColumn(label: Text(ERPStrings.TOPLAM_MIKTAR)),
-                        DataColumn(label: Text(ERPStrings.ALINMIS_MIKTAR)),
-                        DataColumn(label: Text(ERPStrings.BIRIM_FIYATI)),
-                        DataColumn(label: Text(ERPStrings.KDV_ORANI)),
-                        DataColumn(label: Text(ERPStrings.DEPO)),
-                        DataColumn(label: Text(ERPStrings.ACIKLAMA)),
-                        DataColumn(label: Text(ERPStrings.TALEP_EDEN)),
-                      ],
-                      rows: dispatchItemsFilter.map((element) {
-                        return DataRow(cells: [
-                          buildStockNameDataCellField(element.stockName),
-                          buildSelectionAreaDataCellField(
-                              element.isSelected, element.stockId),
-                          buildAmountDataCellField(element.amount, element),
-                          buildUnitNameDataCellField(element.unitName, element),
-                          buildTotalAmountDataCellField(element.totalAmount),
-                          buildAcceptedAmountDataCellField(
-                              element.acceptedAmount),
-                          buildPriceDataCellField(element.price),
-                          buildTaxRateDataCellField(element.taxRate),
-                          buildStoreNameDataCellField(
-                              element.storeName, element),
-                          buildDescriptionDataCellField(element.aciklama),
-                          buildRequesterUserDataCellField(
-                              element.requesterUser),
-                        ]);
-                      }).toList(),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
     );
   }
 

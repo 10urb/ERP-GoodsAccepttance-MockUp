@@ -33,55 +33,53 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
       drawer: ERPMainDrawer.buildMainDrawer(context),
       drawerEnableOpenDragGesture: true,
       drawerScrimColor: Colors.white24,
-      persistentFooterButtons: const [
-        // buildFloatingActionButton1(),
-        // buildFloatingActionButton2(),
-        // buildFloatingActionButton3(),
+      body: buildBodyListView(context),
+    );
+  }
+
+  ListView buildBodyListView(BuildContext context) {
+    return ListView(
+      children: [
+        Container(
+          margin: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width / 50,
+              right: MediaQuery.of(context).size.width / 50,
+              top: MediaQuery.of(context).size.height / 50),
+          child: CalendarDatePicker(
+            initialCalendarMode: DatePickerMode.day,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime(2100),
+            onDateChanged: (value) {},
+          ),
+        ),
+        const Divider(
+          endIndent: 250,
+          height: 100,
+          indent: 250,
+        ),
+        const Text(
+          "⭐ Favoriler",
+          style: TextStyle(fontSize: 20),
+          textAlign: TextAlign.center,
+        ),
+        Container(
+          margin: const EdgeInsets.only(
+            left: 250,
+            right: 250,
+            top: 20,
+          ),
+          child: FloatingActionButton.extended(
+              backgroundColor: Colors.amberAccent,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ExpectedCompaniesWidget()));
+              },
+              label: const Text("Mal Kabul")),
+        )
       ],
-      body: ListView(
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width / 50,
-                right: MediaQuery.of(context).size.width / 50,
-                top: MediaQuery.of(context).size.height / 50),
-            child: CalendarDatePicker(
-              initialCalendarMode: DatePickerMode.day,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2100),
-              onDateChanged: (value) {},
-            ),
-          ),
-          const Divider(
-            endIndent: 250,
-            height: 100,
-            indent: 250,
-          ),
-          const Text(
-            "⭐ Favoriler",
-            style: TextStyle(fontSize: 20),
-            textAlign: TextAlign.center,
-          ),
-          Container(
-            margin: const EdgeInsets.only(
-              left: 250,
-              right: 250,
-              top: 20,
-            ),
-            child: FloatingActionButton.extended(
-                backgroundColor: Colors.amberAccent,
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const ExpectedCompaniesWidget()));
-                },
-                label: const Text("Mal Kabul")),
-          )
-        ],
-      ),
     );
   }
 
